@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd \\\"/Users/volodymyrpavlyshyn/Documents/work/personal/notate-2-excalidraw\\\" && until [ -n \\\"$(jobs)\\\" ] 2>/dev/null; do break; done; while kill -0 %1 2>/dev/null; do sleep 2; done 2>/dev/...",
+  "error": "Exit code 143\nCommand timed out after 2m 0s",
+  "timestamp": "2026-06-28T17:26:50.156Z",
+  "retry_count": 1
+}

@@ -1,0 +1,245 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1782661998345,
+  "projectRoot": "/Users/volodymyrpavlyshyn/Documents/work/personal/notate-2-excalidraw",
+  "techStack": {
+    "languages": [],
+    "frameworks": [],
+    "packageManager": null,
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {},
+  "hotPaths": [
+    {
+      "path": "packages/notate-codec/src/proto.ts",
+      "accessCount": 2,
+      "lastAccessed": 1782665325015,
+      "type": "file"
+    },
+    {
+      "path": "apps/desktop/src/main/index.ts",
+      "accessCount": 2,
+      "lastAccessed": 1782666853033,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-excalidraw/src/excalidraw-types.ts",
+      "accessCount": 2,
+      "lastAccessed": 1782670538551,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-excalidraw/src/util.ts",
+      "accessCount": 2,
+      "lastAccessed": 1782670551430,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-excalidraw/tsconfig.json",
+      "accessCount": 2,
+      "lastAccessed": 1782670922048,
+      "type": "file"
+    },
+    {
+      "path": "README.md",
+      "accessCount": 2,
+      "lastAccessed": 1782672106325,
+      "type": "file"
+    },
+    {
+      "path": "package.json",
+      "accessCount": 1,
+      "lastAccessed": 1782664282882,
+      "type": "file"
+    },
+    {
+      "path": "tsconfig.base.json",
+      "accessCount": 1,
+      "lastAccessed": 1782664288813,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-codec/package.json",
+      "accessCount": 1,
+      "lastAccessed": 1782664323250,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-codec/tsconfig.json",
+      "accessCount": 1,
+      "lastAccessed": 1782664328939,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-codec/src/model.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782664353149,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-codec/src/decode.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782664429852,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-codec/src/encode.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782664458110,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-codec/src/color.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782664476279,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-codec/src/index.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782664481571,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-codec/src/codec.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782664507056,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-excalidraw/package.json",
+      "accessCount": 1,
+      "lastAccessed": 1782665134030,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-excalidraw/src/toExcalidraw.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782665693397,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-excalidraw/src/rasterize.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782665712908,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-excalidraw/src/fromExcalidraw.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782665740809,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-excalidraw/src/mermaidToNotate.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782665765899,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-excalidraw/src/index.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782665771896,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-excalidraw/src/convert.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782665796566,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-excalidraw/vitest.config.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782665809245,
+      "type": "file"
+    },
+    {
+      "path": "apps/desktop/package.json",
+      "accessCount": 1,
+      "lastAccessed": 1782666723074,
+      "type": "file"
+    },
+    {
+      "path": "apps/desktop/electron.vite.config.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782666799087,
+      "type": "file"
+    },
+    {
+      "path": "apps/desktop/tsconfig.json",
+      "accessCount": 1,
+      "lastAccessed": 1782666806416,
+      "type": "file"
+    },
+    {
+      "path": "apps/desktop/src/preload/index.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782666877968,
+      "type": "file"
+    },
+    {
+      "path": "apps/desktop/src/renderer/index.html",
+      "accessCount": 1,
+      "lastAccessed": 1782666903356,
+      "type": "file"
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/env.d.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782666909321,
+      "type": "file"
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/main.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1782666919984,
+      "type": "file"
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/scene.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782666940099,
+      "type": "file"
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/App.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1782666989530,
+      "type": "file"
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/Banner.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1782667000516,
+      "type": "file"
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/MermaidDialog.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1782667014647,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

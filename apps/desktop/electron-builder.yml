@@ -1,0 +1,28 @@
+appId: com.notate.excalidraw
+productName: Notate Viewer
+directories:
+  output: release
+  buildResources: build
+files:
+  - out/**/*
+  - package.json
+fileAssociations:
+  - ext: notate
+    name: Notate Note
+    description: Notate handwriting note
+    role: Editor
+mac:
+  category: public.app-category.productivity
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+  artifactName: ${productName}-${version}-${arch}.${ext}
+win:
+  target:
+    - nsis
+linux:
+  target:
+    - AppImage
+  category: Graphics
