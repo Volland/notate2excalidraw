@@ -29,6 +29,7 @@ export default defineConfig({
           __dirname,
           '../../packages/notate-excalidraw/src/index.ts',
         ),
+        '@notate/ui': resolve(__dirname, '../../packages/notate-ui/src/index.ts'),
       },
     },
     define: {

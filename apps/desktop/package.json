@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "@notate/codec": "0.1.0",
-    "@notate/excalidraw": "0.1.0"
+    "@notate/excalidraw": "0.1.0",
+    "@notate/ui": "0.1.0"
   },
   "devDependencies": {
     "@excalidraw/excalidraw": "^0.18.0",

@@ -54,8 +54,14 @@ from notate's `SerializationModels.kt`).
 ```
 packages/notate-codec/        # .notate ZIP+protobuf read/write (framework-free)
 packages/notate-excalidraw/   # notate <-> Excalidraw mapping + mermaid + rasterizer
-apps/desktop/                 # Electron + React + @excalidraw/excalidraw app
+packages/notate-ui/           # shared React renderer: Excalidraw glue, dialogs, actions hook
+apps/desktop/                 # Electron app (macOS / Windows / Linux)
+apps/mobile/                  # Capacitor app (Android) — same renderer in a WebView
 ```
+
+The desktop and mobile apps share all rendering and conversion logic via
+`@notate/ui`; only the shell differs (native menu + dialogs on desktop, an
+on-screen toolbar + file picker / share sheet on Android).
 
 ## Develop
 
@@ -69,13 +75,35 @@ npm run dev          # launch the Electron app (electron-vite dev)
 A ready-to-open sample note lives at [`samples/hello.notate`](samples/hello.notate)
 (File → Open it once the app is running).
 
-## Package installers
+## Package installers (desktop)
 
 ```bash
 npm run dist:mac     # -> apps/desktop/release/*.dmg  (x64 + arm64)
 npm run dist:win     # -> NSIS installer
 npm run dist:linux   # -> AppImage
 ```
+
+## Android (Capacitor)
+
+Requires the Android SDK (platform 34, build-tools 34) and a JDK 17.
+
+```bash
+cd apps/mobile
+npm run build              # build web assets into dist/
+npx cap sync android       # copy assets + plugins into the native project
+npm run cap:open           # open in Android Studio (Run ▶ to a device/emulator)
+
+# …or build a debug APK from the CLI:
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+cd android && ./gradlew assembleDebug
+# APK -> apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+```
+
+`npm run android:apk` (in `apps/mobile`) chains build → sync → assembleDebug.
+
+On Android: **Open** uses the system file picker, **Save / Export** writes to the
+app's Documents folder and opens a share sheet so you can place the file anywhere.
 
 ## Status & limitations
 

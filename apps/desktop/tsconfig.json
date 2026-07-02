@@ -15,7 +15,8 @@
     "types": ["node"],
     "paths": {
       "@notate/codec": ["../../packages/notate-codec/src/index.ts"],
-      "@notate/excalidraw": ["../../packages/notate-excalidraw/src/index.ts"]
+      "@notate/excalidraw": ["../../packages/notate-excalidraw/src/index.ts"],
+      "@notate/ui": ["../../packages/notate-ui/src/index.ts"]
     }
   },
   "include": ["src", "electron.vite.config.ts"]

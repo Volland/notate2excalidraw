@@ -67,6 +67,18 @@
       "type": "file"
     },
     {
+      "path": "apps/desktop/src/renderer/src/electronPlatform.ts",
+      "accessCount": 2,
+      "lastAccessed": 1782799822369,
+      "type": "file"
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/App.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1782799837372,
+      "type": "file"
+    },
+    {
       "path": "package.json",
       "accessCount": 1,
       "lastAccessed": 1782664282882,
@@ -223,12 +235,6 @@
       "type": "file"
     },
     {
-      "path": "apps/desktop/src/renderer/src/App.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1782666989530,
-      "type": "file"
-    },
-    {
       "path": "apps/desktop/src/renderer/src/Banner.tsx",
       "accessCount": 1,
       "lastAccessed": 1782667000516,
@@ -238,6 +244,90 @@
       "path": "apps/desktop/src/renderer/src/MermaidDialog.tsx",
       "accessCount": 1,
       "lastAccessed": 1782667014647,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-ui/package.json",
+      "accessCount": 1,
+      "lastAccessed": 1782799675881,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-ui/tsconfig.json",
+      "accessCount": 1,
+      "lastAccessed": 1782799681210,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-ui/src/scene.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782799717867,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-ui/src/platform.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782799730390,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-ui/src/Banner.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1782799741651,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-ui/src/MermaidDialog.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1782799755110,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-ui/src/useNotateActions.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782799783714,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-ui/src/index.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782799791718,
+      "type": "file"
+    },
+    {
+      "path": "apps/mobile/package.json",
+      "accessCount": 1,
+      "lastAccessed": 1782800783781,
+      "type": "file"
+    },
+    {
+      "path": "apps/mobile/vite.config.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782800804750,
+      "type": "file"
+    },
+    {
+      "path": "apps/mobile/capacitor.config.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782800814671,
+      "type": "file"
+    },
+    {
+      "path": "apps/mobile/tsconfig.json",
+      "accessCount": 1,
+      "lastAccessed": 1782800822383,
+      "type": "file"
+    },
+    {
+      "path": "apps/mobile/index.html",
+      "accessCount": 1,
+      "lastAccessed": 1782800830283,
+      "type": "file"
+    },
+    {
+      "path": "apps/mobile/src/capacitorPlatform.ts",
+      "accessCount": 1,
+      "lastAccessed": 1782800843454,
       "type": "file"
     }
   ],
