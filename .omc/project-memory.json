@@ -1,19 +1,40 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1782661998345,
+  "lastScanned": 1784123076703,
   "projectRoot": "/Users/volodymyrpavlyshyn/Documents/work/personal/notate-2-excalidraw",
   "techStack": {
-    "languages": [],
-    "frameworks": [],
-    "packageManager": null,
-    "runtime": null
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": ">=20",
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "vitest",
+        "version": "2.1.8",
+        "category": "testing"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": "Node.js 20"
   },
   "build": {
-    "buildCommand": null,
-    "testCommand": null,
+    "buildCommand": "npm run build",
+    "testCommand": "npm test",
     "lintCommand": null,
-    "devCommand": null,
-    "scripts": {}
+    "devCommand": "npm run dev",
+    "scripts": {
+      "build": "npm run build --workspace=@notate/codec && npm run build --workspace=@notate/excalidraw",
+      "test": "npm run test --workspace=@notate/codec && npm run test --workspace=@notate/excalidraw",
+      "dev": "npm run dev --workspace=@notate/desktop",
+      "dist": "npm run dist --workspace=@notate/desktop",
+      "dist:mac": "npm run dist:mac --workspace=@notate/desktop"
+    }
   },
   "conventions": {
     "namingStyle": null,
@@ -22,312 +43,93 @@
     "fileOrganization": null
   },
   "structure": {
-    "isMonorepo": false,
-    "workspaces": [],
+    "isMonorepo": true,
+    "workspaces": [
+      "packages/*",
+      "apps/*"
+    ],
     "mainDirectories": [],
     "gitBranches": null
   },
   "customNotes": [],
-  "directoryMap": {},
+  "directoryMap": {
+    "apps": {
+      "path": "apps",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1784123076627,
+      "keyFiles": []
+    },
+    "packages": {
+      "path": "packages",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1784123076629,
+      "keyFiles": []
+    },
+    "samples": {
+      "path": "samples",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1784123076679,
+      "keyFiles": [
+        "hello.notate"
+      ]
+    }
+  },
   "hotPaths": [
     {
-      "path": "packages/notate-codec/src/proto.ts",
-      "accessCount": 2,
-      "lastAccessed": 1782665325015,
-      "type": "file"
-    },
-    {
       "path": "apps/desktop/src/main/index.ts",
-      "accessCount": 2,
-      "lastAccessed": 1782666853033,
+      "accessCount": 11,
+      "lastAccessed": 1784143705391,
       "type": "file"
     },
     {
-      "path": "packages/notate-excalidraw/src/excalidraw-types.ts",
-      "accessCount": 2,
-      "lastAccessed": 1782670538551,
+      "path": "packages/notate-excalidraw/src/fromExcalidraw.ts",
+      "accessCount": 5,
+      "lastAccessed": 1784143440797,
       "type": "file"
     },
     {
-      "path": "packages/notate-excalidraw/src/util.ts",
-      "accessCount": 2,
-      "lastAccessed": 1782670551430,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-excalidraw/tsconfig.json",
-      "accessCount": 2,
-      "lastAccessed": 1782670922048,
-      "type": "file"
-    },
-    {
-      "path": "README.md",
-      "accessCount": 2,
-      "lastAccessed": 1782672106325,
-      "type": "file"
-    },
-    {
-      "path": "apps/desktop/src/renderer/src/electronPlatform.ts",
-      "accessCount": 2,
-      "lastAccessed": 1782799822369,
+      "path": "packages/notate-excalidraw/src/toExcalidraw.ts",
+      "accessCount": 3,
+      "lastAccessed": 1784143389332,
       "type": "file"
     },
     {
       "path": "apps/desktop/src/renderer/src/App.tsx",
       "accessCount": 2,
-      "lastAccessed": 1782799837372,
+      "lastAccessed": 1784130272504,
       "type": "file"
     },
     {
-      "path": "package.json",
-      "accessCount": 1,
-      "lastAccessed": 1782664282882,
+      "path": "packages/notate-ui/src/useNotateActions.ts",
+      "accessCount": 2,
+      "lastAccessed": 1784143454807,
       "type": "file"
     },
     {
-      "path": "tsconfig.base.json",
+      "path": "apps/desktop/src/renderer/src/electronPlatform.ts",
       "accessCount": 1,
-      "lastAccessed": 1782664288813,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-codec/package.json",
-      "accessCount": 1,
-      "lastAccessed": 1782664323250,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-codec/tsconfig.json",
-      "accessCount": 1,
-      "lastAccessed": 1782664328939,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-codec/src/model.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782664353149,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-codec/src/decode.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782664429852,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-codec/src/encode.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782664458110,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-codec/src/color.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782664476279,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-codec/src/index.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782664481571,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-codec/src/codec.test.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782664507056,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-excalidraw/package.json",
-      "accessCount": 1,
-      "lastAccessed": 1782665134030,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-excalidraw/src/toExcalidraw.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782665693397,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-excalidraw/src/rasterize.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782665712908,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-excalidraw/src/fromExcalidraw.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782665740809,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-excalidraw/src/mermaidToNotate.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782665765899,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-excalidraw/src/index.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782665771896,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-excalidraw/src/convert.test.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782665796566,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-excalidraw/vitest.config.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782665809245,
-      "type": "file"
-    },
-    {
-      "path": "apps/desktop/package.json",
-      "accessCount": 1,
-      "lastAccessed": 1782666723074,
-      "type": "file"
-    },
-    {
-      "path": "apps/desktop/electron.vite.config.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782666799087,
-      "type": "file"
-    },
-    {
-      "path": "apps/desktop/tsconfig.json",
-      "accessCount": 1,
-      "lastAccessed": 1782666806416,
+      "lastAccessed": 1784127974663,
       "type": "file"
     },
     {
       "path": "apps/desktop/src/preload/index.ts",
       "accessCount": 1,
-      "lastAccessed": 1782666877968,
+      "lastAccessed": 1784127980113,
       "type": "file"
     },
     {
-      "path": "apps/desktop/src/renderer/index.html",
+      "path": "packages/notate-excalidraw/src/constants.ts",
       "accessCount": 1,
-      "lastAccessed": 1782666903356,
-      "type": "file"
-    },
-    {
-      "path": "apps/desktop/src/renderer/src/env.d.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782666909321,
+      "lastAccessed": 1784143362167,
       "type": "file"
     },
     {
       "path": "apps/desktop/src/renderer/src/main.tsx",
       "accessCount": 1,
-      "lastAccessed": 1782666919984,
-      "type": "file"
-    },
-    {
-      "path": "apps/desktop/src/renderer/src/scene.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782666940099,
-      "type": "file"
-    },
-    {
-      "path": "apps/desktop/src/renderer/src/Banner.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1782667000516,
-      "type": "file"
-    },
-    {
-      "path": "apps/desktop/src/renderer/src/MermaidDialog.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1782667014647,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-ui/package.json",
-      "accessCount": 1,
-      "lastAccessed": 1782799675881,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-ui/tsconfig.json",
-      "accessCount": 1,
-      "lastAccessed": 1782799681210,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-ui/src/scene.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782799717867,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-ui/src/platform.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782799730390,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-ui/src/Banner.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1782799741651,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-ui/src/MermaidDialog.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1782799755110,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-ui/src/useNotateActions.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782799783714,
-      "type": "file"
-    },
-    {
-      "path": "packages/notate-ui/src/index.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782799791718,
-      "type": "file"
-    },
-    {
-      "path": "apps/mobile/package.json",
-      "accessCount": 1,
-      "lastAccessed": 1782800783781,
-      "type": "file"
-    },
-    {
-      "path": "apps/mobile/vite.config.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782800804750,
-      "type": "file"
-    },
-    {
-      "path": "apps/mobile/capacitor.config.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782800814671,
-      "type": "file"
-    },
-    {
-      "path": "apps/mobile/tsconfig.json",
-      "accessCount": 1,
-      "lastAccessed": 1782800822383,
-      "type": "file"
-    },
-    {
-      "path": "apps/mobile/index.html",
-      "accessCount": 1,
-      "lastAccessed": 1782800830283,
-      "type": "file"
-    },
-    {
-      "path": "apps/mobile/src/capacitorPlatform.ts",
-      "accessCount": 1,
-      "lastAccessed": 1782800843454,
+      "lastAccessed": 1784143717562,
       "type": "file"
     }
   ],

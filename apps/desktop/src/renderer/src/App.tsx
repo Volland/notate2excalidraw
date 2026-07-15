@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Excalidraw } from '@excalidraw/excalidraw';
+import { Excalidraw, MainMenu } from '@excalidraw/excalidraw';
 import '@excalidraw/excalidraw/index.css';
 import {
   Banner,
@@ -85,7 +85,41 @@ export default function App(): React.JSX.Element {
         }}
         viewModeEnabled={viewMode}
         initialData={{ appState: { viewBackgroundColor: '#ffffff' } }}
-      />
+      >
+        {/*
+          Replace Excalidraw's default menu (whose built-in "Open" loads
+          .excalidraw files and does nothing with a .notate) with our own
+          working notate actions. These mirror the native macOS menu bar.
+        */}
+        <MainMenu>
+          <MainMenu.Item onSelect={() => void actions.open()} shortcut="⌘O">
+            Open .notate…
+          </MainMenu.Item>
+          <MainMenu.Item onSelect={() => void actions.saveNotate(false)} shortcut="⌘S">
+            Save .notate
+          </MainMenu.Item>
+          <MainMenu.Item onSelect={() => void actions.saveNotate(true)}>
+            Save As…
+          </MainMenu.Item>
+          <MainMenu.Separator />
+          <MainMenu.Item onSelect={() => void actions.exportExcalidraw()}>
+            Export Excalidraw…
+          </MainMenu.Item>
+          <MainMenu.Item onSelect={() => void actions.exportImage('png')}>
+            Export PNG…
+          </MainMenu.Item>
+          <MainMenu.Item onSelect={() => void actions.exportImage('svg')}>
+            Export SVG…
+          </MainMenu.Item>
+          <MainMenu.Separator />
+          <MainMenu.Item onSelect={() => setMermaidOpen(true)} shortcut="⌘M">
+            Import Mermaid…
+          </MainMenu.Item>
+          <MainMenu.Separator />
+          <MainMenu.DefaultItems.ToggleTheme />
+          <MainMenu.DefaultItems.ClearCanvas />
+        </MainMenu>
+      </Excalidraw>
       {mermaidOpen && (
         <MermaidDialog
           onCancel={() => setMermaidOpen(false)}

@@ -3,9 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      The packaged app loads over file://, where 'self' is an opaque origin and
+      does NOT match the bundled ./assets/*.js — Chromium would block the
+      renderer script entirely (blank window). Adding the `file:` scheme source
+      lets the local bundle load in production while still forbidding remote code.
+      'unsafe-eval' is required by Excalidraw's runtime.
+    -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; script-src 'self'; connect-src 'self' data: blob:; worker-src 'self' blob:"
+      content="default-src 'self' file: data: blob:; img-src 'self' file: data: blob:; style-src 'self' file: 'unsafe-inline'; font-src 'self' file: data:; script-src 'self' file: 'unsafe-inline' 'unsafe-eval' blob:; connect-src 'self' file: data: blob:; worker-src 'self' file: blob:"
     />
     <title>Notate Viewer</title>
     <style>

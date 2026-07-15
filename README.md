@@ -102,6 +102,30 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 `npm run android:apk` (in `apps/mobile`) chains build → sync → assembleDebug.
 
+### Signed release installer
+
+A release keystore + signing config is wired up in `apps/mobile/android`
+(`keystore.properties` + `app/build.gradle`; both the keystore and properties are
+git-ignored — replace them with your own for a real release):
+
+```bash
+cd apps/mobile
+npm run build && npx cap sync android
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+cd android && ./gradlew assembleRelease
+# Signed installer -> apps/mobile/android/app/build/outputs/apk/release/app-release.apk
+adb install -r app/build/outputs/apk/release/app-release.apk
+```
+
+To generate your own keystore:
+
+```bash
+keytool -genkeypair -v -keystore apps/mobile/android/app/notate-release.keystore \
+  -alias notate -keyalg RSA -keysize 2048 -validity 10000
+```
+
+For a Play Store upload bundle, use `./gradlew bundleRelease` (produces an `.aab`).
+
 On Android: **Open** uses the system file picker, **Save / Export** writes to the
 app's Documents folder and opens a share sheet so you can place the file anywhere.
 

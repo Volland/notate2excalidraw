@@ -18,6 +18,7 @@ import type {
 } from './excalidraw-types.js';
 import { rasterizeShape, RASTERIZABLE } from './rasterize.js';
 import { extForMime, genId, parseDataUrl } from './util.js';
+import { DEVICE_MAX_PRESSURE, FREEDRAW_SIZE_FACTOR } from './constants.js';
 
 const DEFAULT_PRESSURE = 0.5;
 
@@ -30,12 +31,15 @@ function alignmentFromText(a: string | undefined): number {
 function freedrawToStroke(el: AnyExcalidrawElement, order: number): StrokeItem {
   const pts = (el.points as [number, number][] | undefined) ?? [];
   const pressures = (el.pressures as number[] | undefined) ?? [];
-  const size = Math.max(1, el.strokeWidth || 1);
+  // Invert the notate->Excalidraw width mapping so edits round-trip to the
+  // real notate pixel width.
+  const width = Math.max(1, (el.strokeWidth || 1) * FREEDRAW_SIZE_FACTOR);
   const points: StrokePoint[] = pts.map((p, i) => ({
     x: el.x + p[0],
     y: el.y + p[1],
-    pressure: pressures[i] ?? DEFAULT_PRESSURE,
-    size,
+    // Restore raw device pressure scale for notate/Onyx.
+    pressure: (pressures[i] ?? DEFAULT_PRESSURE) * DEVICE_MAX_PRESSURE,
+    size: width,
     tiltX: 0,
     tiltY: 0,
     timestamp: 0,
@@ -45,7 +49,7 @@ function freedrawToStroke(el: AnyExcalidrawElement, order: number): StrokeItem {
     kind: 'stroke',
     points,
     color: hexToArgb(el.strokeColor, opacityAlpha),
-    width: size,
+    width,
     style: el.opacity != null && el.opacity < 70 ? StrokeType.HIGHLIGHTER : StrokeType.FINELINER,
     strokeOrder: order,
     zIndex: 0,
@@ -57,21 +61,21 @@ function polylineToStroke(
   el: AnyExcalidrawElement,
   order: number,
 ): StrokeItem {
-  const size = Math.max(1, el.strokeWidth || 1);
+  const width = Math.max(1, (el.strokeWidth || 1) * FREEDRAW_SIZE_FACTOR);
   const opacityAlpha = (el.opacity ?? 100) / 100;
   return {
     kind: 'stroke',
     points: points.map(([x, y]) => ({
       x,
       y,
-      pressure: DEFAULT_PRESSURE,
-      size,
+      pressure: DEFAULT_PRESSURE * DEVICE_MAX_PRESSURE,
+      size: width,
       tiltX: 0,
       tiltY: 0,
       timestamp: 0,
     })),
     color: hexToArgb(el.strokeColor, opacityAlpha),
-    width: size,
+    width,
     style: el.strokeStyle === 'dashed' || el.strokeStyle === 'dotted' ? StrokeType.DASH : StrokeType.FINELINER,
     strokeOrder: order,
     zIndex: 0,

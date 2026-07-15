@@ -21,6 +21,7 @@ import {
   genId,
   mimeForExt,
 } from './util.js';
+import { DEVICE_MAX_PRESSURE, FREEDRAW_SIZE_FACTOR } from './constants.js';
 
 const SOURCE = 'notate-excalidraw';
 
@@ -45,8 +46,10 @@ function strokeToFreedraw(s: StrokeItem): AnyExcalidrawElement {
   }
 
   const points: [number, number][] = s.points.map((p) => [p.x - minX, p.y - minY]);
-  // Normalize device pressure into Excalidraw's 0..1 range.
-  const norm = maxP > 1 ? maxP : 1;
+  // Normalize raw device pressure (~0..4096) into Excalidraw's 0..1 range.
+  // Use the fixed device scale (not per-stroke max) so a light stroke stays
+  // light instead of being stretched to full pressure.
+  const norm = maxP > DEVICE_MAX_PRESSURE ? maxP : DEVICE_MAX_PRESSURE;
   const pressures = s.points.map((p) => {
     const v = p.pressure > 0 ? p.pressure / norm : 0.5;
     return v < 0 ? 0 : v > 1 ? 1 : v;
@@ -63,7 +66,9 @@ function strokeToFreedraw(s: StrokeItem): AnyExcalidrawElement {
     width: Math.max(0, maxX - minX),
     height: Math.max(0, maxY - minY),
     strokeColor: argbToHex(s.color),
-    strokeWidth: Math.max(0.5, s.width),
+    // notate stores the actual pixel width; Excalidraw multiplies strokeWidth by
+    // FREEDRAW_SIZE_FACTOR when rendering, so divide to match the real thickness.
+    strokeWidth: Math.max(0.25, s.width / FREEDRAW_SIZE_FACTOR),
     strokeStyle: s.style === StrokeType.DASH ? 'dashed' : 'solid',
     opacity,
     points,

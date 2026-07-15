@@ -6,3 +6,8 @@ release/
 .DS_Store
 .vite/
 coverage/
+
+# Android signing secrets — never commit
+*.keystore
+*.jks
+keystore.properties
