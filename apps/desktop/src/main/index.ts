@@ -94,6 +94,17 @@ function buildMenu(): void {
           click: () => sendMenu('import-mermaid'),
         },
         { type: 'separator' },
+        {
+          label: 'Recognize with local AI',
+          accelerator: 'CmdOrCtrl+R',
+          click: () => sendMenu('recognize'),
+        },
+        {
+          label: 'AI Model…',
+          accelerator: 'CmdOrCtrl+,',
+          click: () => sendMenu('settings'),
+        },
+        { type: 'separator' },
         isMac ? { role: 'close' } : { role: 'quit' },
       ],
     },
@@ -172,6 +183,115 @@ ipcMain.handle('app:get-pending-open', async (): Promise<string | null> => {
   pendingOpenPath = null;
   return p;
 });
+
+// ---- Local vision model (Ollama) recognition ----
+
+const OLLAMA_HOST = process.env.OLLAMA_HOST || 'http://127.0.0.1:11434';
+
+const RECOGNIZE_PROMPT = `You convert a hand-drawn diagram / handwritten notes image into structured elements.
+Return ONLY a JSON array (no markdown fences, no prose). Each element is:
+{"type":"rectangle"|"ellipse"|"diamond"|"arrow"|"line"|"text","text":<string or null>,"x":<0..1>,"y":<0..1>,"w":<0..1>,"h":<0..1>}
+- x,y,w,h are fractions of the image size; x,y is the element's top-left corner; origin is the image top-left.
+- Use "text" for handwritten words/labels and transcribe them accurately.
+- Use shape types for drawn boxes, circles/ellipses, diamonds, arrows and lines.
+- If a drawn box contains a label, return the shape with its "text" set to the label.
+Output the JSON array and nothing else.`;
+
+interface RecognizedItem {
+  type: string;
+  text?: string | null;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+function extractJsonArray(text: string): RecognizedItem[] {
+  let t = text.trim();
+  // Strip ```json ... ``` fences if present.
+  const fence = /```(?:json)?\s*([\s\S]*?)```/i.exec(t);
+  if (fence) t = fence[1].trim();
+  const start = t.indexOf('[');
+  const end = t.lastIndexOf(']');
+  if (start === -1 || end === -1 || end < start) return [];
+  try {
+    const parsed = JSON.parse(t.slice(start, end + 1));
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (e) => e && typeof e.type === 'string' && typeof e.x === 'number',
+    ) as RecognizedItem[];
+  } catch {
+    return [];
+  }
+}
+
+ipcMain.handle('ai:list-models', async (): Promise<
+  { name: string; sizeBytes?: number; vision: boolean }[]
+> => {
+  const res = await fetch(`${OLLAMA_HOST}/api/tags`);
+  if (!res.ok) throw new Error(`Ollama ${res.status} listing models`);
+  const data = (await res.json()) as {
+    models?: { name: string; size?: number }[];
+  };
+  const models = data.models ?? [];
+  return Promise.all(
+    models.map(async (m) => {
+      let vision = false;
+      try {
+        const show = await fetch(`${OLLAMA_HOST}/api/show`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ model: m.name }),
+        });
+        if (show.ok) {
+          const d = (await show.json()) as { capabilities?: string[] };
+          vision = (d.capabilities ?? []).includes('vision');
+        }
+      } catch {
+        /* leave vision=false */
+      }
+      return { name: m.name, sizeBytes: m.size, vision };
+    }),
+  );
+});
+
+async function ollamaVision(
+  imageBytes: Uint8Array,
+  model: string,
+  prompt: string,
+): Promise<string> {
+  const base64 = Buffer.from(imageBytes).toString('base64');
+  const res = await fetch(`${OLLAMA_HOST}/api/generate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model,
+      prompt,
+      images: [base64],
+      stream: false,
+      think: false,
+      options: { temperature: 0 },
+    }),
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`Ollama ${res.status}: ${body.slice(0, 200)}`);
+  }
+  const data = (await res.json()) as { response?: string };
+  return data.response ?? '';
+}
+
+ipcMain.handle(
+  'ai:recognize',
+  async (_e, imageBytes: Uint8Array, model: string): Promise<RecognizedItem[]> =>
+    extractJsonArray(await ollamaVision(imageBytes, model, RECOGNIZE_PROMPT)),
+);
+
+ipcMain.handle(
+  'ai:vision-text',
+  async (_e, imageBytes: Uint8Array, model: string, prompt: string): Promise<string> =>
+    ollamaVision(imageBytes, model, prompt),
+);
 
 // ---- OS file association handling ----
 

@@ -30,6 +30,22 @@ const api = {
   getPendingOpen: (): Promise<string | null> =>
     ipcRenderer.invoke('app:get-pending-open'),
 
+  /** Run a local vision model (Ollama) over a PNG; returns recognized items. */
+  recognizeDrawing: (
+    imageBytes: Uint8Array,
+    model: string,
+  ): Promise<unknown[]> => ipcRenderer.invoke('ai:recognize', imageBytes, model),
+
+  /** List locally installed models (Ollama), with vision capability. */
+  listModels: (): Promise<unknown[]> => ipcRenderer.invoke('ai:list-models'),
+
+  /** Run a vision model on an image with a custom prompt; returns raw text. */
+  visionText: (
+    imageBytes: Uint8Array,
+    model: string,
+    prompt: string,
+  ): Promise<string> => ipcRenderer.invoke('ai:vision-text', imageBytes, model, prompt),
+
   /** Application-menu actions (open, save, export-*, import-mermaid, …). */
   onMenu: (cb: (action: string) => void): (() => void) => {
     const handler = (_e: unknown, action: string) => cb(action);

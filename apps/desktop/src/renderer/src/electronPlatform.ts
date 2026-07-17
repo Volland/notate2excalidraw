@@ -1,4 +1,10 @@
-import type { OpenedFile, Platform, SaveRequest } from '@notate/ui';
+import type {
+  AiModel,
+  OpenedFile,
+  Platform,
+  RecognizedItem,
+  SaveRequest,
+} from '@notate/ui';
 
 function basename(p: string): string {
   return p.split(/[\\/]/).pop() ?? p;
@@ -29,5 +35,24 @@ export const electronPlatform: Platform = {
     if (!path) return null;
     await window.notateAPI.writeFile(path, req.data);
     return { location: path };
+  },
+
+  async recognizeDrawing(
+    imageBytes: Uint8Array,
+    model: string,
+  ): Promise<RecognizedItem[]> {
+    return (await window.notateAPI.recognizeDrawing(imageBytes, model)) as RecognizedItem[];
+  },
+
+  async listModels(): Promise<AiModel[]> {
+    return (await window.notateAPI.listModels()) as AiModel[];
+  },
+
+  async visionText(
+    imageBytes: Uint8Array,
+    model: string,
+    prompt: string,
+  ): Promise<string> {
+    return window.notateAPI.visionText(imageBytes, model, prompt);
   },
 };

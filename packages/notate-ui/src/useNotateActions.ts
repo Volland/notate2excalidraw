@@ -16,10 +16,31 @@ import {
   sceneToExcalidrawJSON,
   sceneToNotateBytes,
 } from './scene.js';
+import {
+  DEFAULT_AI_MODEL,
+  contentBounds,
+  recognizedToElements,
+} from './aiRecognize.js';
+import {
+  TEXT_TILE_PROMPT,
+  type PlacedText,
+  analyzeStrokes,
+  assembleTiled,
+  dedupeTexts,
+  parseTextItems,
+  planTiles,
+  renderTile,
+  snapToInk,
+  strokesFromElements,
+} from './hybrid.js';
 
 function stripExt(name: string): string {
   return name.replace(/\.[^./\\]+$/, '');
 }
+
+/** Longest image side sent to the vision model (keeps it fast + in-distribution). */
+const AI_IMAGE_MAX_PX = 1400;
+const AI_EXPORT_PAD = 16;
 
 export interface NotateActions {
   loadBytes: (data: Uint8Array, name?: string, location?: string) => void;
@@ -28,6 +49,11 @@ export interface NotateActions {
   exportExcalidraw: () => Promise<void>;
   exportImage: (format: 'png' | 'svg') => Promise<void>;
   importMermaid: (definition: string) => Promise<void>;
+  /** Whole-image recognition (model returns boxes + text). */
+  recognize: (model?: string) => Promise<void>;
+  /** Hybrid: geometry for shapes, model OCR only for text, snapped to ink. */
+  recognizeHybrid: (model?: string) => Promise<void>;
+  aiAvailable: boolean;
 }
 
 export function useNotateActions(opts: {
@@ -212,5 +238,125 @@ export function useNotateActions(opts: {
     [apiRef, notify],
   );
 
-  return { loadBytes, open, saveNotate, exportExcalidraw, exportImage, importMermaid };
+  const recognize = useCallback(
+    async (model: string = DEFAULT_AI_MODEL) => {
+      const api = apiRef.current;
+      if (!api) return;
+      if (!platform.recognizeDrawing) {
+        notify({ kind: 'error', message: 'Local AI recognition is not available here.' });
+        return;
+      }
+      const elements = api.getSceneElements();
+      if (!elements.length) {
+        notify({ kind: 'error', message: 'Nothing to recognize — open a drawing first.' });
+        return;
+      }
+      try {
+        const bounds = contentBounds(elements, AI_EXPORT_PAD);
+        const files = api.getFiles();
+        const blob = await exportToBlob({
+          elements: elements as never,
+          files: files as never,
+          appState: { exportBackground: true, viewBackgroundColor: '#ffffff' } as never,
+          mimeType: 'image/png',
+          exportPadding: AI_EXPORT_PAD,
+          getDimensions: (w: number, h: number) => {
+            const scale = Math.min(1, AI_IMAGE_MAX_PX / Math.max(w, h));
+            return { width: Math.round(w * scale), height: Math.round(h * scale), scale };
+          },
+        } as never);
+        const bytes = new Uint8Array(await blob.arrayBuffer());
+        notify({
+          kind: 'info',
+          message: `Recognizing with ${model}… local AI, this can take up to a minute.`,
+        });
+        const items = await platform.recognizeDrawing(bytes, model);
+        // Place the cleaned copy to the right of the original ink.
+        const gap = Math.max(120, bounds.w * 0.12);
+        const newEls = recognizedToElements(items, bounds, bounds.w + gap);
+        if (!newEls.length) {
+          notify({ kind: 'error', message: 'The model returned no usable elements.' });
+          return;
+        }
+        api.updateScene({ elements: [...elements, ...newEls] });
+        api.scrollToContent(newEls as unknown[], { fitToContent: true });
+        notify({
+          kind: 'info',
+          message: `Added ${newEls.length} recognized element(s) beside the drawing.`,
+        });
+      } catch (err) {
+        notify({ kind: 'error', message: `Recognition failed: ${String(err)}` });
+      }
+    },
+    [apiRef, platform, notify],
+  );
+
+  const recognizeHybrid = useCallback(
+    async (model: string = DEFAULT_AI_MODEL) => {
+      const api = apiRef.current;
+      if (!api) return;
+      if (!platform.visionText) {
+        notify({ kind: 'error', message: 'Local AI recognition is not available here.' });
+        return;
+      }
+      const all = api.getSceneElements();
+      const strokes = strokesFromElements(all);
+      if (!strokes.length) {
+        notify({ kind: 'error', message: 'No pen strokes to recognize.' });
+        return;
+      }
+      try {
+        const { shapes, textStrokes, doodles, bounds, medianH } = analyzeStrokes(strokes);
+        const tiles = planTiles(bounds, medianH);
+        const placed: PlacedText[] = [];
+        for (let i = 0; i < tiles.length; i++) {
+          const bytes = renderTile(strokes, tiles[i]);
+          if (!bytes) continue;
+          notify({
+            kind: 'info',
+            message: `Reading handwriting with ${model}… tile ${i + 1}/${tiles.length}.`,
+          });
+          const raw = await platform.visionText(bytes, model, TEXT_TILE_PROMPT);
+          for (const it of parseTextItems(raw)) {
+            placed.push(snapToInk(it, tiles[i], textStrokes));
+          }
+        }
+        const texts = dedupeTexts(placed);
+        const gap = Math.max(120, bounds.w * 0.12);
+        const newEls = assembleTiled({
+          shapes,
+          texts,
+          doodles,
+          offsetX: bounds.w + gap,
+        });
+        if (!newEls.length) {
+          notify({ kind: 'error', message: 'Nothing could be recognized.' });
+          return;
+        }
+        api.updateScene({ elements: [...all, ...newEls] });
+        api.scrollToContent(newEls as unknown[], { fitToContent: true });
+        notify({
+          kind: 'info',
+          message: `Cleaned copy added: ${shapes.length} shape(s), ${texts.length} text label(s).`,
+        });
+      } catch (err) {
+        notify({ kind: 'error', message: `Recognition failed: ${String(err)}` });
+      }
+    },
+    [apiRef, platform, notify],
+  );
+
+  return {
+    loadBytes,
+    open,
+    saveNotate,
+    exportExcalidraw,
+    exportImage,
+    importMermaid,
+    recognize,
+    recognizeHybrid,
+    aiAvailable:
+      typeof platform.visionText === 'function' ||
+      typeof platform.recognizeDrawing === 'function',
+  };
 }

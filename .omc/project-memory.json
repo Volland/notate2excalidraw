@@ -80,8 +80,26 @@
   "hotPaths": [
     {
       "path": "apps/desktop/src/main/index.ts",
+      "accessCount": 16,
+      "lastAccessed": 1784197297895,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-ui/src/useNotateActions.ts",
+      "accessCount": 12,
+      "lastAccessed": 1784204390474,
+      "type": "file"
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/App.tsx",
       "accessCount": 11,
-      "lastAccessed": 1784143705391,
+      "lastAccessed": 1784197479279,
+      "type": "file"
+    },
+    {
+      "path": "apps/desktop/src/renderer/src/electronPlatform.ts",
+      "accessCount": 6,
+      "lastAccessed": 1784197312929,
       "type": "file"
     },
     {
@@ -91,33 +109,39 @@
       "type": "file"
     },
     {
+      "path": "packages/notate-ui/src/platform.ts",
+      "accessCount": 4,
+      "lastAccessed": 1784197285426,
+      "type": "file"
+    },
+    {
+      "path": "apps/desktop/src/preload/index.ts",
+      "accessCount": 4,
+      "lastAccessed": 1784197306788,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-ui/src/hybrid.ts",
+      "accessCount": 4,
+      "lastAccessed": 1784204354219,
+      "type": "file"
+    },
+    {
       "path": "packages/notate-excalidraw/src/toExcalidraw.ts",
       "accessCount": 3,
       "lastAccessed": 1784143389332,
       "type": "file"
     },
     {
-      "path": "apps/desktop/src/renderer/src/App.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1784130272504,
+      "path": "packages/notate-ui/src/index.ts",
+      "accessCount": 3,
+      "lastAccessed": 1784197499957,
       "type": "file"
     },
     {
-      "path": "packages/notate-ui/src/useNotateActions.ts",
-      "accessCount": 2,
-      "lastAccessed": 1784143454807,
-      "type": "file"
-    },
-    {
-      "path": "apps/desktop/src/renderer/src/electronPlatform.ts",
-      "accessCount": 1,
-      "lastAccessed": 1784127974663,
-      "type": "file"
-    },
-    {
-      "path": "apps/desktop/src/preload/index.ts",
-      "accessCount": 1,
-      "lastAccessed": 1784127980113,
+      "path": "packages/notate-ui/src/aiRecognize.ts",
+      "accessCount": 3,
+      "lastAccessed": 1784223551178,
       "type": "file"
     },
     {
@@ -130,6 +154,12 @@
       "path": "apps/desktop/src/renderer/src/main.tsx",
       "accessCount": 1,
       "lastAccessed": 1784143717562,
+      "type": "file"
+    },
+    {
+      "path": "packages/notate-ui/src/SettingsDialog.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1784194031906,
       "type": "file"
     }
   ],

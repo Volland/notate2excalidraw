@@ -2,13 +2,18 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Excalidraw, MainMenu } from '@excalidraw/excalidraw';
 import '@excalidraw/excalidraw/index.css';
 import {
+  type AiModel,
   Banner,
   type BannerState,
+  DEFAULT_AI_MODEL,
   type ExcalidrawAPILike,
   MermaidDialog,
+  SettingsDialog,
   useNotateActions,
 } from '@notate/ui';
 import { electronPlatform } from './electronPlatform.js';
+
+const AI_MODEL_KEY = 'notate.aiModel';
 
 function basename(p: string): string {
   return p.split(/[\\/]/).pop() ?? p;
@@ -19,12 +24,39 @@ export default function App(): React.JSX.Element {
   const [viewMode, setViewMode] = useState(false);
   const [mermaidOpen, setMermaidOpen] = useState(false);
   const [banner, setBanner] = useState<BannerState | null>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [models, setModels] = useState<AiModel[]>([]);
+  const [modelsLoading, setModelsLoading] = useState(false);
+  const [modelsError, setModelsError] = useState<string | null>(null);
+  const [aiModel, setAiModelState] = useState<string>(
+    () => localStorage.getItem(AI_MODEL_KEY) || DEFAULT_AI_MODEL,
+  );
+  const setAiModel = (m: string) => {
+    setAiModelState(m);
+    try {
+      localStorage.setItem(AI_MODEL_KEY, m);
+    } catch {
+      /* ignore */
+    }
+  };
 
   const actions = useNotateActions({
     apiRef,
     platform: electronPlatform,
     notify: setBanner,
   });
+
+  // Load the installed model list whenever the settings dialog opens.
+  useEffect(() => {
+    if (!settingsOpen || !electronPlatform.listModels) return;
+    setModelsLoading(true);
+    setModelsError(null);
+    electronPlatform
+      .listModels()
+      .then(setModels)
+      .catch((e) => setModelsError(String(e)))
+      .finally(() => setModelsLoading(false));
+  }, [settingsOpen]);
 
   // Wire native-menu actions and OS file-open events to the shared actions.
   useEffect(() => {
@@ -51,6 +83,12 @@ export default function App(): React.JSX.Element {
         case 'import-mermaid':
           setMermaidOpen(true);
           break;
+        case 'recognize':
+          void actions.recognizeHybrid(aiModel);
+          break;
+        case 'settings':
+          setSettingsOpen(true);
+          break;
         case 'toggle-view-mode':
           setViewMode((v) => !v);
           break;
@@ -63,7 +101,7 @@ export default function App(): React.JSX.Element {
       offMenu();
       offOpen();
     };
-  }, [actions]);
+  }, [actions, aiModel]);
 
   // Pull any file the OS asked us to open before the UI mounted.
   useEffect(() => {
@@ -115,6 +153,19 @@ export default function App(): React.JSX.Element {
           <MainMenu.Item onSelect={() => setMermaidOpen(true)} shortcut="⌘M">
             Import Mermaid…
           </MainMenu.Item>
+          {actions.aiAvailable && (
+            <>
+              <MainMenu.Item
+                onSelect={() => void actions.recognizeHybrid(aiModel)}
+                shortcut="⌘R"
+              >
+                Recognize with local AI
+              </MainMenu.Item>
+              <MainMenu.Item onSelect={() => setSettingsOpen(true)}>
+                AI model… ({aiModel})
+              </MainMenu.Item>
+            </>
+          )}
           <MainMenu.Separator />
           <MainMenu.DefaultItems.ToggleTheme />
           <MainMenu.DefaultItems.ClearCanvas />
@@ -126,6 +177,19 @@ export default function App(): React.JSX.Element {
           onSubmit={(def) => {
             void actions.importMermaid(def);
             setMermaidOpen(false);
+          }}
+        />
+      )}
+      {settingsOpen && (
+        <SettingsDialog
+          models={models}
+          current={aiModel}
+          loading={modelsLoading}
+          error={modelsError}
+          onCancel={() => setSettingsOpen(false)}
+          onSave={(m) => {
+            setAiModel(m);
+            setSettingsOpen(false);
           }}
         />
       )}
